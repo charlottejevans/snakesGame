@@ -1,17 +1,15 @@
+let board, context, foodX, foodY;
 
 // board
  const blockSize = 25 // Size of each block on the board.
 const rows = 20 // Number of rows on the board.
 const cols = 20  // Number of columns on the board.
-let board, context;
+
 
 // snake head
 let snakeX = blockSize * 5 // Tells the snake to start at the 5 x&y.
 let snakeY = blockSize * 5
 
-// food
-let foodX = blockSize * 10 // Tells the food to start at the 10 x&y.
-let foodY = blockSize * 10
 
 window.onload= function(){
     board = document.getElementById('board')
@@ -19,6 +17,7 @@ window.onload= function(){
     board.width = cols * blockSize
     context = board.getContext('2d') // Used for drawing on the board.
 
+    placeFood()
     update()
 }
 
@@ -31,4 +30,10 @@ function update() {
 
     context.fillStyle='red' // Changes the colour of the food.
     context.fillRect(foodX,foodY,blockSize,blockSize) // Draws the food at the x and y coordinates. Food coordinates, width and height of the canvas.
+}
+
+function placeFood() {
+     //  math.random returns a number between 0-1. Math.floor rounds the number down to the nearest whole number.
+    foodX = Math.floor(Math.random() * cols) * blockSize // Randomly places the food on the board.
+    foodY = Math.floor(Math.random() * rows) * blockSize
 }

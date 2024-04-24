@@ -13,6 +13,8 @@ let snakeY = blockSize * 5
 let velocityX = 0 // Velocity of the snake on the x axis.
 let velocityY = 0 // Velocity of the snake on the y axis.
 
+let snakeBody = [] // Array to store segments x/y coordinates.
+
 window.onload= function(){
     board = document.getElementById('board')
     board.height = rows * blockSize // changes the height of the board to 500.
@@ -33,13 +35,26 @@ function update() {
     context.fillRect(foodX,foodY,blockSize,blockSize) // Draws the food at the x and y coordinates. Food coordinates, width and height of the canvas.
 
     if(snakeX === foodX && snakeY === foodY) { // If the snake eats the food, the food will be placed in a new location.
+        snakeBody.push([foodX, foodY]) // grows the segment where the food was. Adds a new segment to the snake.
         placeFood()
     }
 
+    for (let i = snakeBody.length - 1; i > 0; i--) { // Loops through the snake body array.
+        snakeBody[i] = snakeBody[i-1] // Moves the snake body segments with the snake head.
+    }
+
+    if (snakeBody.length) {
+        snakeBody[0] = [snakeX, snakeY] // Moves the snake head. 0 = 1 before the head of the snake.
+    }
+
+    // Snake
     context.fillStyle='lime' // Changes the colour of the snake.
     snakeX += velocityX * blockSize // Moves the snake on the x-axis. Moves by block size/square each time instead of 1 pixel.
     snakeY += velocityY *blockSize // Moves the snake on the y-axis.
     context.fillRect(snakeX,snakeY,blockSize,blockSize) // Draws the snake at the x and y coordinates. Snake coordinates, width and height of the canvas.
+    for (let i = 0; i < snakeBody.length; i++) { // Loops through the snake body array.
+    context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize) // Draws the snake body at the x and y coordinates. Snake body coordinates, width and height of the canvas.
+    }
  }
 
 function changeDirection(e) { // Changes the direction of the snake.

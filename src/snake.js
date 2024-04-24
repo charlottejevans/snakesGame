@@ -15,6 +15,8 @@ let velocityY = 0 // Velocity of the snake on the y axis.
 
 let snakeBody = [] // Array to store segments x/y coordinates.
 
+let gameOver = false
+
 window.onload= function(){
     board = document.getElementById('board')
     board.height = rows * blockSize // changes the height of the board to 500.
@@ -28,6 +30,9 @@ window.onload= function(){
 }
 
 function update() {
+     if (gameOver) {
+        return }
+
     context.fillStyle='black' // Changes the colour of the pen to black.
     context.fillRect(0,0,board.width,board.height)  // Starting from the corner of the board, filling a width and height of 500 and makes it black.
 
@@ -54,6 +59,19 @@ function update() {
     context.fillRect(snakeX,snakeY,blockSize,blockSize) // Draws the snake at the x and y coordinates. Snake coordinates, width and height of the canvas.
     for (let i = 0; i < snakeBody.length; i++) { // Loops through the snake body array.
     context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize) // Draws the snake body at the x and y coordinates. Snake body coordinates, width and height of the canvas.
+    }
+
+    // Game over conditions
+    if (snakeX < 0 || snakeX > cols* blockSize || snakeY < 0 || snakeY > rows * blockSize) { // If the snake goes out of bounds, the game is over.
+        gameOver = true
+        alert("Game Over. Press F5 to play again.")
+    }
+
+    for (let i = 0 ; i < snakeBody.length; i++) { // Loops through the snake body array.
+        if (snakeX === snakeBody[i][0] && snakeY === snakeBody[i][1]) { // If the snake head collides with the snake body, the game is over.
+            gameOver = true
+            alert("Game Over. Press F5 to play again.")
+        }
     }
  }
 
